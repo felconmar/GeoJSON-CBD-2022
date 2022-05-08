@@ -49,28 +49,30 @@ const DrawPlane = () => {
     ]
     const style = { height: '80vh', width: '75vw' }
     const mapRef = useRef()
+    var drawnItems = new L.FeatureGroup();
+
     useEffect(() => {
 
         const { current = {} } = mapRef;
         const { leafletElement: map } = current;
-
+    
         if ( !map ) return;
 
+        map.addLayer(drawnItems);
+    
       }, [mapRef]);
 
-    let cont = 1;
-    var myGeoJSON = {};
-    myGeoJSON.type = "FeatureCollection";
-    
-    
+    var exportData = <></>;
+
     const _created = (e) => {
-        myGeoJSON.features = [];   
-        cont = cont + 1; 
+        e.layer.addTo(drawnItems);
+        exportData = <pre>{JSON.stringify(drawnItems.toGeoJSON(), null, 2)}</pre>;
+
     }
     const _edited = (e) => console.log(e)
     const _deleted = (e) => {
-        myGeoJSON = {};
-        myGeoJSON.type = "FeatureCollection";
+        drawnItems = new L.FeatureGroup();
+        exportData = <></>;
     }
 
     const position = [40.42532588715934, -3.691904777609234]
@@ -83,14 +85,9 @@ const DrawPlane = () => {
     const contentStyle = {
         maxWidth: '600px',
         width: '90%',
+        maxHeight: '500px',
+        overflow: 'scroll'
       };
-
-    const exportData = <>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a
-    nostrum. Dolorem, repellat quidem ut, minima sint vel eveniet
-    quibusdam voluptates delectus doloremque, explicabo tempore dicta
-    adipisci fugit amet dignissimos?
-    <br />
-    L</>;
 
     return (
         <>
@@ -98,42 +95,29 @@ const DrawPlane = () => {
                 <div className="col text-center">
                     <div className="col">
                     <button onClick={importMarkers}><FaAccessibleIcon/>Importar</button>
-                    <button>Exportar</button>
                     <Popup
-    trigger={
-      <button type="button" className="button">
-        Open Modal
-      </button>
-    }
-    modal
-    lockScroll={true}
-    contentStyle={contentStyle}
-    nested
-  >
-    {close => (
-      <div className="modal">
-        <button className="close" onClick={close}>
-          &times;
-        </button>
-        <div className="header"> Modal Title </div>
-        <div className="content">
-          {exportData}
-        </div>
-        <div className="actions">
-                            
-                            <button
-                                type="button"
-                                className="button"
-                                onClick={() => {
-                                console.log('modal closed ');
-                                close();
-                                }}
-                            >
-                                close modal
-                            </button>
-                            </div>
+                        trigger={
+                        <button type="button" className="button">
+                            Exportar
+                        </button>
+                        }
+                        modal
+                        lockScroll={true}
+                        contentStyle={contentStyle}
+                        nested
+                    >
+                    {close => (
+                    <div className="modal">
+                        <button className="close" onClick={close}>
+                        &times;
+                        </button>
+                        <div className="header">
+                            GeoJSON exportado!! Puedes copiar siguiente contenido y enviarlo a quien desees
                         </div>
-                        )}
+                        <div>
+                            {exportData}
+                        </div>
+                        </div>)}
                     </Popup>
                     <Map center={position} zoom={15}>
                             <FeatureGroup>
