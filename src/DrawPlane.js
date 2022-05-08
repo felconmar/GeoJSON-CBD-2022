@@ -8,6 +8,8 @@ import { EditControl } from 'react-leaflet-draw'
 import { Marker } from 'react-leaflet';
 import {  iconLocation  } from './IconLocation';
 import { FaAccessibleIcon } from "react-icons/fa";
+import 'leaflet-easybutton'
+import 'react-icons/fa'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
@@ -44,6 +46,14 @@ const DrawPlane = () => {
     ]
     const style = { height: '80vh', width: '75vw' }
     const mapRef = useRef()
+    useEffect(() => {
+
+        const { current = {} } = mapRef;
+        const { leafletElement: map } = current;
+
+        if ( !map ) return;
+
+      }, [mapRef]);
 
     let cont = 1;
     var myGeoJSON = {};
@@ -62,10 +72,9 @@ const DrawPlane = () => {
 
     const position = [40.42532588715934, -3.691904777609234]
 
-    
 
     function importMarkers () {
-
+        console.log("aaaaaaaaaaaaaaaaaaaa")
     }
 
     return (
@@ -73,6 +82,8 @@ const DrawPlane = () => {
             <div className="row">
                 <div className="col text-center">
                     <div className="col">
+                    <button onClick={importMarkers}>Importar</button>
+                    <button>Exportar</button>
                     <Map center={position} zoom={15}>
                             <FeatureGroup>
                                 <EditControl
@@ -92,6 +103,7 @@ const DrawPlane = () => {
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             />
                         </Map>
+
                     </div>
                 </div>
             </div>
