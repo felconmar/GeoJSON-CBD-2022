@@ -1,5 +1,5 @@
 import './App.css'
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, Text } from 'react'
 
 import L from 'leaflet'
 import { Map, ImageOverlay, FeatureGroup, TileLayer, useMap } from 'react-leaflet'
@@ -8,11 +8,14 @@ import { EditControl } from 'react-leaflet-draw'
 import { Marker } from 'react-leaflet';
 import {  iconLocation  } from './IconLocation';
 import { FaAccessibleIcon } from "react-icons/fa";
+import Popup from 'reactjs-popup';
 import 'leaflet-easybutton'
 import 'react-icons/fa'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
+
+import 'reactjs-popup/dist/index.css';
 
 
 /*
@@ -74,16 +77,64 @@ const DrawPlane = () => {
 
 
     function importMarkers () {
-        console.log("aaaaaaaaaaaaaaaaaaaa")
+        
     }
+
+    const contentStyle = {
+        maxWidth: '600px',
+        width: '90%',
+      };
+
+    const exportData = <>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a
+    nostrum. Dolorem, repellat quidem ut, minima sint vel eveniet
+    quibusdam voluptates delectus doloremque, explicabo tempore dicta
+    adipisci fugit amet dignissimos?
+    <br />
+    L</>;
 
     return (
         <>
             <div className="row">
                 <div className="col text-center">
                     <div className="col">
-                    <button onClick={importMarkers}>Importar</button>
+                    <button onClick={importMarkers}><FaAccessibleIcon/>Importar</button>
                     <button>Exportar</button>
+                    <Popup
+    trigger={
+      <button type="button" className="button">
+        Open Modal
+      </button>
+    }
+    modal
+    lockScroll={true}
+    contentStyle={contentStyle}
+    nested
+  >
+    {close => (
+      <div className="modal">
+        <button className="close" onClick={close}>
+          &times;
+        </button>
+        <div className="header"> Modal Title </div>
+        <div className="content">
+          {exportData}
+        </div>
+        <div className="actions">
+                            
+                            <button
+                                type="button"
+                                className="button"
+                                onClick={() => {
+                                console.log('modal closed ');
+                                close();
+                                }}
+                            >
+                                close modal
+                            </button>
+                            </div>
+                        </div>
+                        )}
+                    </Popup>
                     <Map center={position} zoom={15}>
                             <FeatureGroup>
                                 <EditControl
