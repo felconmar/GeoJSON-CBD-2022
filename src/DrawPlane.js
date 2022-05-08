@@ -2,17 +2,18 @@ import './App.css'
 import React, { useRef, useState, useEffect } from 'react'
 
 import L from 'leaflet'
-import { MapContainer, ImageOverlay, FeatureGroup, TileLayer, useMap } from 'react-leaflet'
+import { Map, ImageOverlay, FeatureGroup, TileLayer, useMap } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
 
 import { Marker } from 'react-leaflet';
 import {  iconLocation  } from './IconLocation';
+import { FaAccessibleIcon } from "react-icons/fa";
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
 
 
-
+/*
 function LocationMarker() {
     const [position, setPosition] = useState(null);
     const [bbox, setBbox] = useState([]);
@@ -34,6 +35,7 @@ function LocationMarker() {
       </Marker>
     );
   }
+*/
 
 const DrawPlane = () => {
     const bounds = [
@@ -60,12 +62,18 @@ const DrawPlane = () => {
 
     const position = [40.42532588715934, -3.691904777609234]
 
+    
+
+    function importMarkers () {
+
+    }
+
     return (
         <>
             <div className="row">
                 <div className="col text-center">
                     <div className="col">
-                    <MapContainer center={position} zoom={15}>
+                    <Map center={position} zoom={15}>
                             <FeatureGroup>
                                 <EditControl
                                     position="topright"
@@ -83,7 +91,7 @@ const DrawPlane = () => {
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             />
-                        </MapContainer>
+                        </Map>
                     </div>
                 </div>
             </div>
