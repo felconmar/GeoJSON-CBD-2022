@@ -1,8 +1,8 @@
 import L from 'leaflet';
 
 const iconLocation = new L.Icon({
-    iconUrl: require('./resources/mylocation_icon.png'),
-    iconRetinaUrl: require('./resources/mylocation_icon.png'),
+    iconUrl: require('./resources/marker.png'),
+    iconRetinaUrl: require('./resources/marker.png'),
     iconAnchor: null,
     popupAnchor: null,
     shadowUrl: null,

@@ -1,8 +1,8 @@
 import './App.css'
-import React, { useRef, useState, useEffect, Text } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 import L from 'leaflet'
-import { Map, ImageOverlay, FeatureGroup, TileLayer, useMap } from 'react-leaflet'
+import { Map, FeatureGroup, TileLayer } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
 
 import { Marker } from 'react-leaflet';
@@ -16,6 +16,16 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
 
 import 'reactjs-popup/dist/index.css';
+
+
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png',
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
+        });
 
 
 /*
@@ -77,9 +87,23 @@ const DrawPlane = () => {
 
     const position = [40.42532588715934, -3.691904777609234]
 
+    const importData = {
+        "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium",
+        "popupContent": "This is where the Rockies play!"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-104.99404, 39.75621]
+    }
+      };
 
-    function importMarkers () {
-        
+    function importMarkers (e) {
+        e.preventDefault();
+        var myLayer = L.geoJson().addTo(mapRef);
+        myLayer.addData(textarea);
     }
 
     const contentStyle = {
@@ -88,6 +112,13 @@ const DrawPlane = () => {
         maxHeight: '500px',
         overflow: 'scroll'
       };
+
+    const [textarea, setTextarea] = useState(
+    ""
+    );
+    const handleTextarea = (event) => {
+        setTextarea(event.target.value)
+    }
 
     return (
         <>
@@ -116,10 +147,40 @@ const DrawPlane = () => {
                         </div>
                         <div>
                             {exportData}
+                            </div>
+                        </div>)}
+                    </Popup>
+
+                <Popup
+                    trigger={
+                    <button type="button" className="button">
+                        Importar
+                    </button>
+                    }
+                    modal
+                    lockScroll={false}
+                    contentStyle={contentStyle}
+                    nested
+                >
+                    {close => (
+                    <div className="modal">
+                        <button className="close" onClick={close}>
+                        &times;
+                        </button>
+                        <div className="header"> Importación de datos GeoJSON </div>
+                        <div className="content">
+                        <form onSubmit={importMarkers}>
+                            <textarea value={textarea} onChange={handleTextarea} />
+                            <button type='submit'>Cargar</button>
+                        </form>
                         </div>
                         </div>)}
                     </Popup>
-                    <Map center={position} zoom={15}>
+
+
+
+
+                    <Map center={position} zoom={15} ref={mapRef}> 
                             <FeatureGroup>
                                 <EditControl
                                     position="topright"
