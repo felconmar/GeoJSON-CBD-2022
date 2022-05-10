@@ -60,6 +60,7 @@ const DrawPlane = () => {
     const style = { height: '80vh', width: '75vw' }
     const mapRef = useRef()
     var drawnItems = new L.FeatureGroup();
+    var exportData = <></>;
     const [textarea, setTextarea] = useState();
     
     useEffect(() => {
@@ -69,26 +70,29 @@ const DrawPlane = () => {
     
         if ( !map ) return;
 
-        map.addLayer(drawnItems);
-
         let impdata = cookies.get('importData');
         let data = new L.GeoJSON(impdata)
-        data.addTo(map);
         cookies.remove('importData')
+
+        data.addTo(drawnItems);
+        actualizarExport();
+        map.addLayer(drawnItems);
 
       }, [mapRef]);
 
-    var exportData = <></>;
-
     const _created = (e) => {
         e.layer.addTo(drawnItems);
-        exportData = <pre>{JSON.stringify(drawnItems.toGeoJSON(), null, 2)}</pre>;
+        actualizarExport();
 
     }
     const _edited = (e) => console.log(e)
     const _deleted = (e) => {
-        drawnItems = new L.FeatureGroup();
-        exportData = <></>;
+        drawnItems = drawnItems.removeLayer(e.layer);
+        actualizarExport();
+    }
+
+    function actualizarExport(){
+        exportData = <pre>{JSON.stringify(drawnItems.toGeoJSON(), null, 2)}</pre>;
     }
 
     const position = [40.42532588715934, -3.691904777609234]
@@ -193,6 +197,11 @@ const DrawPlane = () => {
                                         rectangle: false,
                                         circle: false,
                                         circlemarker: false,
+                                        edit: false
+                                    }}
+                                    edit= {{
+                                        edit: false,
+                                        remove: false
                                     }}
                                 />
                             </FeatureGroup>
