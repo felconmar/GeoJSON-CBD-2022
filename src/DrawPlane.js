@@ -9,15 +9,15 @@ import { Marker } from 'react-leaflet';
 import {  iconLocation  } from './IconLocation';
 import { FaAccessibleIcon } from "react-icons/fa";
 import Popup from 'reactjs-popup';
+import Cookies from 'universal-cookie'
+import './DrawPlane.css'
 import 'leaflet-easybutton'
 import 'react-icons/fa'
-
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
-
 import 'reactjs-popup/dist/index.css';
 
-
+const cookies = new Cookies();
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -60,7 +60,8 @@ const DrawPlane = () => {
     const style = { height: '80vh', width: '75vw' }
     const mapRef = useRef()
     var drawnItems = new L.FeatureGroup();
-
+    const [textarea, setTextarea] = useState();
+    
     useEffect(() => {
 
         const { current = {} } = mapRef;
@@ -69,7 +70,12 @@ const DrawPlane = () => {
         if ( !map ) return;
 
         map.addLayer(drawnItems);
-    
+
+        let impdata = cookies.get('importData');
+        let data = new L.GeoJSON(impdata)
+        data.addTo(map);
+        cookies.remove('importData')
+
       }, [mapRef]);
 
     var exportData = <></>;
@@ -101,9 +107,7 @@ const DrawPlane = () => {
       };
 
     function importMarkers (e) {
-        e.preventDefault();
-        var myLayer = L.geoJson().addTo(mapRef);
-        myLayer.addData(textarea);
+        cookies.set('importData',textarea)
     }
 
     const contentStyle = {
@@ -113,9 +117,7 @@ const DrawPlane = () => {
         overflow: 'scroll'
       };
 
-    const [textarea, setTextarea] = useState(
-    ""
-    );
+    
     const handleTextarea = (event) => {
         setTextarea(event.target.value)
     }
@@ -169,9 +171,9 @@ const DrawPlane = () => {
                         </button>
                         <div className="header"> Importación de datos GeoJSON </div>
                         <div className="content">
-                        <form onSubmit={importMarkers}>
-                            <textarea value={textarea} onChange={handleTextarea} />
-                            <button type='submit'>Cargar</button>
+                        <form className="PopUp-form" onSubmit={importMarkers}>
+                            <textarea className="PopUp-textarea" value={textarea} onChange={handleTextarea} />
+                            <button className="PopUp-button" type='submit'>Cargar</button>
                         </form>
                         </div>
                         </div>)}
