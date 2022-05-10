@@ -127,7 +127,7 @@ const DrawPlane = () => {
             <div className="row">
                 <div className="col text-center">
                     <div className="col">
-                    <button onClick={importMarkers}><FaAccessibleIcon/>Importar</button>
+                    <div className='button-box'>
                     <Popup
                         trigger={
                         <button type="button" className="button">
@@ -179,7 +179,7 @@ const DrawPlane = () => {
                         </div>)}
                     </Popup>
 
-
+                    </div>
 
 
                     <Map center={position} zoom={15} ref={mapRef}> 
