@@ -4,7 +4,7 @@ El repositorio de Alan busca facilitar el uso de la librería de JavaScript reac
 No hemos conseguido que funcione correctamente con otras librerías que requeríamos pero sin duda su repositorio nos ha servido de gran ayuda.
 
 <a href="https://github.com/AlanCantabrana">
-  <img src="https://avatars.githubusercontent.com/u/54825789?v=4">
+  <img src="https://avatars.githubusercontent.com/u/54825789?size=50">
 </a>
 
 
