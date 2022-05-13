@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import DrawPlane from './DrawPlane'
-import {RemoveScrollBar} from 'react-remove-scroll-bar';
 
 ReactDOM.render(
     <React.StrictMode>

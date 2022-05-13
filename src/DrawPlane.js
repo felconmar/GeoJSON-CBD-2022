@@ -1,23 +1,14 @@
 import './App.css'
 import React, { useRef, useState, useEffect } from 'react'
-
 import L from 'leaflet'
 import { Map, FeatureGroup, TileLayer } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
-
-import { Marker } from 'react-leaflet';
-import {  iconLocation  } from './IconLocation';
-import { FaAccessibleIcon } from "react-icons/fa";
 import Popup from 'reactjs-popup';
-import Cookies from 'universal-cookie'
 import './DrawPlane.css'
-import 'leaflet-easybutton'
-import 'react-icons/fa'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
 import 'reactjs-popup/dist/index.css';
 
-const cookies = new Cookies();
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -28,37 +19,8 @@ delete L.Icon.Default.prototype._getIconUrl;
         });
 
 
-/*
-function LocationMarker() {
-    const [position, setPosition] = useState(null);
-    const [bbox, setBbox] = useState([]);
-    const map = useMap();
-
-
-    
-    useEffect(() => {
-      map.locate().on("locationfound", function (e) {
-        setPosition(e.latlng);
-        map.flyTo(e.latlng, map.getZoom());
-        setBbox(e.bounds.toBBoxString().split(","));
-      });
-    }, [map]);
-
-
-    return position === null ? null : (
-      <Marker position={position} icon={iconLocation}>
-      </Marker>
-    );
-  }
-*/
-
 const DrawPlane = () => {
-    const bounds = [
-        [0, 0],
-        [5400, 7200],
-    ]
-    const style = { height: '80vh', width: '75vw' }
-    const mapRef = useRef()
+    const mapRef = useRef();
     var drawnItems = new L.FeatureGroup();
     var exportData = <></>;
     const [textarea, setTextarea] = useState();
@@ -71,8 +33,8 @@ const DrawPlane = () => {
         if ( !map ) return;
 
         let impdata = JSON.parse(localStorage.getItem('importData'));
-        let data = new L.GeoJSON(impdata)
-        localStorage.removeItem('importData')
+        let data = new L.GeoJSON(impdata);
+        localStorage.removeItem('importData');
 
         data.addTo(drawnItems);
         actualizarExport();
@@ -85,7 +47,7 @@ const DrawPlane = () => {
         actualizarExport();
 
     }
-    const _edited = (e) => console.log(e)
+    const _edited = (e) => console.log(e);
     const _deleted = (e) => {
         drawnItems = drawnItems.removeLayer(e.layer);
         actualizarExport();
@@ -95,23 +57,10 @@ const DrawPlane = () => {
         exportData = <pre>{JSON.stringify(drawnItems.toGeoJSON(), null, 2)}</pre>;
     }
 
-    const position = [40.42532588715934, -3.691904777609234]
-
-    const importData = {
-        "type": "Feature",
-    "properties": {
-        "name": "Coors Field",
-        "amenity": "Baseball Stadium",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [-104.99404, 39.75621]
-    }
-      };
+    const position = [40.42532588715934, -3.691904777609234];
 
     function importMarkers (e) {
-        localStorage.setItem('importData',textarea)
+        localStorage.setItem('importData',textarea);
     }
 
     const contentStyle = {
@@ -123,7 +72,7 @@ const DrawPlane = () => {
 
     
     const handleTextarea = (event) => {
-        setTextarea(event.target.value)
+        setTextarea(event.target.value);
     }
 
     return (
