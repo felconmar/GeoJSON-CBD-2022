@@ -62,7 +62,7 @@ const DrawPlane = () => {
     var drawnItems = new L.FeatureGroup();
     var exportData = <></>;
     const [textarea, setTextarea] = useState();
-    
+
     useEffect(() => {
 
         const { current = {} } = mapRef;
@@ -70,9 +70,9 @@ const DrawPlane = () => {
     
         if ( !map ) return;
 
-        let impdata = cookies.get('importData');
+        let impdata = JSON.parse(localStorage.getItem('importData'));
         let data = new L.GeoJSON(impdata)
-        cookies.remove('importData')
+        localStorage.removeItem('importData')
 
         data.addTo(drawnItems);
         actualizarExport();
@@ -111,7 +111,7 @@ const DrawPlane = () => {
       };
 
     function importMarkers (e) {
-        cookies.set('importData',textarea)
+        localStorage.setItem('importData',textarea)
     }
 
     const contentStyle = {
